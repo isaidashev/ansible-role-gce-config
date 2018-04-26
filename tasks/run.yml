@@ -1,0 +1,5 @@
+- include_tasks: network.yml
+  when: cloud_network is mapping
+
+- include_tasks: compute.yml
+  when: cloud_compute is mapping

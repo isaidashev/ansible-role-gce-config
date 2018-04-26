@@ -1,0 +1,29 @@
+- name: "cloud_compute.instance: Ensure state of instance"
+  gce:
+    name: "{{ instance.name }}"
+    zone: "{{ cloud_compute.zone }}"
+    machine_type: "{{ instance.size | default(omit) }}"
+    image_family: "{{ instance.image | default(omit) }}"
+    network: "{{ instance.network.subnet }}"
+    state: "{{ instance.state | default(omit) }}"
+  register: cloud_compute_facts_instance
+
+- name: "cloud_compute.instance: Set cloud_compute_facts.instance.{{ instance.name }}"
+  set_fact:
+    cloud_compute_facts: "{{ cloud_compute_facts | combine({ 'instance': { instance.name: cloud_compute_facts_instance.instance_data[0] } }) }}"
+
+- name: "cloud_compute.instance: Ensure state of instance tags"
+  gce_tag:
+    instance_name: "{{ instance.name }}"
+    zone: "{{ cloud_compute.zone }}"
+    tags: "{{ instance.tags }}"
+    state: "{{ instance.state | default(omit) }}"
+  when: instance.tags is sequence
+
+- name: "cloud_compute.instance: Add instance to the inventory (memory)"
+  add_host:
+    name: "{{ instance.name }}"
+    groups: "{{ instance.tags | default(omit) }}"
+    ansible_user: "{{ instance.credential.username }}"
+    ansible_host: "{{ cloud_compute_facts.instance[instance.name].public_ip }}"
+    instance_facts: "{{ cloud_compute_facts.instance[instance.name] }}"

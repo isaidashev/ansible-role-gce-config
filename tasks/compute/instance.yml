@@ -6,7 +6,6 @@
     image_family: "{{ instance.image | default(omit) }}"
     network: "{{ instance.network.subnet }}"
     state: "present"
-  notify: handler_cloud_network_loadbalance
 
 - name: "cloud_compute.instance: Ensure instance's state as started for [ {{ instance.name }} ]"
   gce:

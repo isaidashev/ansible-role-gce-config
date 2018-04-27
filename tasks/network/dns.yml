@@ -24,5 +24,4 @@
     value: "{{ cloud_network_dns.value | default(cloud_network_facts.public[cloud_network_dns.public].address) }}"
     type: "{{ cloud_network_dns.type | default('A') }}"
     ttl: "{{ cloud_network_dns.ttl | default('60') }}"
-    overwrite: "yes"
     state: "{{ cloud_network_dns.state | default(omit) }}"

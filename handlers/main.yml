@@ -1,4 +1,0 @@
-- name: "handler_cloud_network_loadbalance"
-  include_role:
-    name: gce_config
-    tasks_from: "network/loadbalance.yml"

@@ -9,15 +9,18 @@
 #    healthy_threshold: "{{ loadbalance.healthcheck.threshold | default(omit) }}"
 #    state: "{{ loadbalance.healthcheck.state | default(omit) }}"
 
+- set_fact:
+    loadbalance_members: []
+
 - name: "cloud_network.loadbalance.members: Create list of region/members"
   set_fact:
-    loadbalance_members: "{{ loadbalance_members|default([]) }} + [ '{{ cloud_network.region }}/{{ loadbalancer_member }}' ]"
+    loadbalance_members: "{{ loadbalance_members }} + [ '{{ cloud_network.zone }}/{{ loadbalancer_member }}' ]"
   loop: "{{ loadbalance.members }}"
   loop_control:
     loop_var: loadbalancer_member
     label: "{{ loadbalancer_member }}"
 
-- name: "cloud_network.loadbalance: Ensure state of loadbalance [ {{ loadbalance.name }} ]"
+- name: "cloud_network.loadbalance: Ensure presence of loadbalance [ {{ loadbalance.name }} ]"
   gce_lb:
     name: "{{ loadbalance.name }}"
     region: "{{ cloud_network.region }}"
@@ -28,3 +31,4 @@
     httphealthcheck_name: "{{ loadbalance.healthcheck.name }}"
     httphealthcheck_path: "{{ loadbalance.healthcheck.url }}"
     httphealthcheck_port: "{{ loadbalance.healthcheck.port }}"
+    state: "{{ loadbalance_members.state | default('present') }}"

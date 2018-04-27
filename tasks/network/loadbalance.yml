@@ -21,7 +21,7 @@
   gce_lb:
     name: "{{ loadbalance.name }}"
     region: "{{ cloud_network.region }}"
-    external_ip: "{{ loadbalance.vip | default(omit) }}"
+    external_ip: "{{ loadbalance.public | default(omit) }}"
     port_range: "{{ loadbalance.port | default(omit) }}"
     protocol: "{{ loadbalance.protocol | default(omit) }}"
     members: "{{ loadbalance_members }}"

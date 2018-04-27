@@ -16,12 +16,28 @@
     zone: "{{ cloud_network_dns.zone }}"
     state: "{{ cloud_network_dns.state | default(omit) }}"
 
+- name: "network_dns: Ensure state of dns SOA record"
+  debug:
+    msg: |
+      We are not allowed to update SOA records.
+      You need to manually go to the portal to set the TTL to lower value.
+#  gcdns_record:
+#    project_id: "{{ cloud_network.project }}"
+#    zone: "{{ cloud_network_dns.zone }}"
+#    record: "{{ cloud_network_dns.record }}"
+#    value: "ns-cloud-b1.googledomains.com. cloud-dns-hostmaster.google.com. 1 21600 3600 259200 300"
+#    type: "SOA"
+#    ttl: "{{ cloud_network_dns.ttl | default('60') }}"
+#    overwrite: "yes"
+#    state: "{{ cloud_network_dns.state | default(omit) }}"
+
 - name: "network_dns: Ensure state of dns record"
   gcdns_record:
     project_id: "{{ cloud_network.project }}"
     zone: "{{ cloud_network_dns.zone }}"
     record: "{{ cloud_network_dns.record }}"
-    value: "{{ cloud_network_dns.value | default(cloud_network_facts.public[cloud_network_dns.name].address) }}"
+    value: "{{ cloud_network_dns.value | default(cloud_network_facts.public[cloud_network_dns.public].address) }}"
     type: "{{ cloud_network_dns.type | default('A') }}"
+    ttl: "{{ cloud_network_dns.ttl | default('60') }}"
     overwrite: "yes"
     state: "{{ cloud_network_dns.state | default(omit) }}"

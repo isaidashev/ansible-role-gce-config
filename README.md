@@ -24,7 +24,7 @@ cloud_compute:
       # The Cloud Image
       image: centos-7
       credential:
-        username: jdacosta
+        username: victorock
         key: jenkins
       # Instance Network
       network:

@@ -27,3 +27,11 @@
     ansible_user: "{{ instance.credential.username }}"
     ansible_host: "{{ cloud_compute_facts.instance[instance.name].public_ip }}"
     instance_facts: "{{ cloud_compute_facts.instance[instance.name] }}"
+
+- name: "cloud_compute.instance: Wait for system to become reachable"
+  delegate_to: "{{ instance.name }}"
+  wait_for_connection:
+
+- name: "cloud_compute.instance: Gather facts for first time"
+  delegate_to: "{{ instance.name }}"
+  setup:

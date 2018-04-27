@@ -1,0 +1,36 @@
+- name: "cloud: Assert that cloud is mapping"
+  assert:
+    that:
+      - cloud is mapping
+    msg: The cloud variable must be a mapping (hash/dictionay).
+
+- name: "cloud: Assert that cloud.provider is gce"
+  assert:
+    that:
+      - cloud.provider is string
+      - "'gce' in cloud.provider"
+    msg: Set cloud.provider to gce in order to use this role.
+
+- name: "cloud: Assert that cloud.region is string"
+  assert:
+    that:
+      - cloud.region is string
+    msg: The cloud.region variable must be a string.
+
+- name: "cloud: Assert that cloud.zone is string"
+  assert:
+    that:
+      - cloud.zone is string
+    msg: The cloud.zone variable must be a string.
+
+- name: "cloud: Assert that cloud.project is string"
+  assert:
+    that:
+      - cloud.project is string
+    msg: The cloud.project variable must be a string.
+
+- name: "cloud: Assert that cloud.cidr is string"
+  assert:
+    that:
+      - cloud.cidr is string
+    msg: The cloud.cidr variable must be a string with valide cidr.

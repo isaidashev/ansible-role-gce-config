@@ -1,0 +1,5 @@
+- include_tasks: "firewall/rule.yml"
+  loop: "{{ cloud_network_firewall.rules | default([]) }}"
+  loop_control:
+    loop_var: cloud_network_firewall_rule
+    label: "{{ cloud_network_firewall_rule.name }}"

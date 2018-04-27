@@ -11,103 +11,118 @@ cloud_provider:
   project: "darkbulb-lab"
 ```
 
-Cloud Compute:
+Cloud Compute Instance:
 ```YAML
 cloud_compute:
-# Instance Information
   instance:
-  # Entry
-    jenkins-000:
-      name: jenkins-000
-      # The Cloud Size
+    jenkins-devops-victorock-io-000:
+      name: jenkins-devops-victorock-io-000
       size: n1-standard-1
-      # The Cloud Image
       image: centos-7
       credential:
-        username: victorock
-        key: jenkins
-      # Instance Network
+        username: jdacosta
+        key: jenkins-devops-victorock-io
       network:
-        subnet: jenkins
+        subnet: devops-victorock-io
         public: yes
-      # Instance Tags
       tags:
         - jenkins
 ```
 
-Cloud Network:
+Cloud Network Subnet:
 ```YAML
 cloud_network:
-  cidr: "10.1.0.0/16"
+  subnet:
+    devops-victorock-io:
+      name: devops-victorock-io
+      cidr: "10.1.1.0/24"
+```
 
-# DNS Information
-  dns:
-    # Entry
-    jenkins:
-      name: jenkins
-      record: jenkins.devops.victorock.io.
-      zone: devops.victorock.io.
-
-# Firewall Information
+Cloud Network Firewall:
+```YAML
+cloud_network:
   firewall:
-    # Entry
-    jenkins:
-      name: jenkins
-      subnet: jenkins
-      rules:
-        - name: "jenkins-ssh-all"
-          src_cidr: 0.0.0.0/0
-          dst_port: 22
-          proto: tcp
+    devops-victorock-io-ssh-all:
+      name: devops-victorock-io-ssh-all
+      subnet: devops-victorock-io
+      src_cidr: 0.0.0.0/0
+      dst_port: 22
+      proto: tcp
 
-        - name: "jenkins-http-all"
-          src_cidr: 0.0.0.0/0
-          dst_port: 8080
-          proto: tcp
+    devops-victorock-io-http-all:
+      name: devops-victorock-io-http-all
+      subnet: devops-victorock-io
+      src_cidr: 0.0.0.0/0
+      dst_port: 22
+      proto: tcp
 
-        - name: "jenkins-https-all"
-          subnet: jenkins
-          src_cidr: 0.0.0.0/0
-          dst_port: 8443
-          proto: tcp
+    devops-victorock-io-https-all:
+      name: devops-victorock-io-https-all
+      subnet: devops-victorock-io
+      src_cidr: 0.0.0.0/0
+      dst_port: 443
+      proto: tcp
 
-        - name: "jenkins-icmp-all"
-          subnet: jenkins
-          src_cidr: 0.0.0.0/0
-          proto: icmp
+    devops-victorock-io-icmp-all:
+      name: devops-victorock-io-icmp-all
+      subnet: devops-victorock-io
+      src_cidr: 0.0.0.0/0
+      proto: icmp
+```
 
-# Loadbalance Information
+Cloud Network Public:
+```YAML
+cloud_network:
+  public:
+    jenkins-devops-victorock-io:
+      name: jenkins-devops-victorock-io
+```
+
+Cloud Network Public:
+```YAML
+cloud_network:
   loadbalance:
-    # Entry
-    jenkins-http:
-      name: jenkins-http
-      # Reference to Public Entry
-      vip: jenkins
+    http-jenkins-devops-victorock-io:
+      name: http-jenkins-devops-victorock-io
+      # Reference to Public Name
+      public: jenkins-devops-victorock-io
       protocol: tcp
       port: 80
       members:
-        # Reference to Instance Entry
-        - jenkins-000
+        # Reference to Instance
+        - jenkins-devops-victorock-io-000
       healthcheck:
-        name: jenkins-http-8080
+        name: http-jenkins-devops-victorock-io
         type: HTTP
-        port: 8080
+        port: 80
         protocol: tcp
         url: "/"
+    https-jenkins-devops-victorock-io:
+      name: https-jenkins-devops-victorock-io
+      public: jenkins-devops-victorock-io
+      protocol: tcp
+      port: 443
+      members:
+        # Reference to Instance Name
+        - jenkins-devops-victorock-io-000
+      healthcheck:
+        name: https-jenkins-devops-victorock-io
+        type: HTTPS
+        port: 443
+        protocol: tcp
+        url: "/"
+```
 
-# Public Information
-  public:
-    # Entry
-    jenkins:
-      name: jenkins
-
-# Subnet Information
-  subnet:
-    # Entry
-    jenkins:
-      name: jenkins
-      # CIDR: 10.1.*1*.0/*24*
-      cidr: "{{ cloud_provider.cidr | ipsubnet(24, 1) }}"
+Cloud Network DNS:
+```YAML
+cloud_network:
+  dns:
+    jenkins-devops-victorock-io:
+      name: jenkins-devops-victorock-io
+      # Reference to Public Name
+      public: jenkins-devops-victorock-io
+      zone: devops.victorock.io
+      record: jenkins.devops.victorock.io
 ```
 
 ## Example
@@ -123,17 +138,20 @@ Playbook: Instance Provisioning
   become: false
 
   tasks:
-    - include_role:
+    - name: "victorock.gce_config"
+      include_role:
         name: victorock.gce_config
         tasks_from: compute
       vars:
         cloud_compute:
           instance:
-            jenkins-000:
-              name: jenkins-000
+            jenkins-devops-victorock-io-000:
+              name: jenkins-devops-victorock-io-000
               size: n1-standard-1
               image: centos-7
-
+              credential:
+                username: jdacosta
+                key: jenkins-devops-victorock-io
 ```
 
 ## License

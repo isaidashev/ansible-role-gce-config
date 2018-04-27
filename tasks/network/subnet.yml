@@ -1,4 +1,4 @@
-- name: "network.subnet: Ensure state of network subnet"
+- name: "cloud_network.subnet: Ensure state of network subnet [ {{ cloud_network_subnet.name }} ]"
   gce_net:
     project_id: "{{ cloud_network.project }}"
     subnet_region: "{{ cloud_network.region }}"

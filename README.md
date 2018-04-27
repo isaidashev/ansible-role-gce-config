@@ -55,23 +55,23 @@ cloud_network:
       name: jenkins
       subnet: jenkins
       rules:
-        - name: "ssh-all"
+        - name: "jenkins-ssh-all"
           src_cidr: 0.0.0.0/0
           dst_port: 22
           proto: tcp
 
-        - name: "http-all"
+        - name: "jenkins-http-all"
           src_cidr: 0.0.0.0/0
           dst_port: 8080
           proto: tcp
 
-        - name: "https-all"
+        - name: "jenkins-https-all"
           subnet: jenkins
           src_cidr: 0.0.0.0/0
           dst_port: 8443
           proto: tcp
 
-        - name: "icmp-all"
+        - name: "jenkins-icmp-all"
           subnet: jenkins
           src_cidr: 0.0.0.0/0
           proto: icmp
@@ -89,7 +89,7 @@ cloud_network:
         # Reference to Instance Entry
         - jenkins-000
       healthcheck:
-        name: http-default
+        name: jenkins-http-8080
         type: HTTP
         port: 8080
         protocol: tcp

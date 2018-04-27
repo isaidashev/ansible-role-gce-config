@@ -1,5 +1,6 @@
-- include_tasks: "firewall/rule.yml"
-  loop: "{{ cloud_network_firewall.rules | default([]) }}"
+- name: "cloud_network.firewall.rule: Processing based on element [ proto ]"
+  include_tasks: "{{ cloud_network_firewall_proto_file }}"
+  with_first_found:
+    - "firewall/{{ cloud_network_firewall.proto }}.yml"
   loop_control:
-    loop_var: cloud_network_firewall_rule
-    label: "{{ cloud_network_firewall_rule.name }}"
+    loop_var: cloud_network_firewall_proto_file

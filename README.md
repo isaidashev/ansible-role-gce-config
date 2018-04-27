@@ -138,6 +138,8 @@ Playbook: Instance Provisioning
 
 ## License
 
-MIT / BSD
+GPLv3
 
 ## Author Information
+
+Victor da Costa

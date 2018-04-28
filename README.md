@@ -24,7 +24,7 @@ cloud_compute:
         key: jenkins-devops-victorock-io
       network:
         subnet: devops-victorock-io
-        public: yes
+        public: ephemeral
       tags:
         - jenkins
 ```

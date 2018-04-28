@@ -4,6 +4,7 @@
     zone: "{{ cloud_compute.zone }}"
     machine_type: "{{ instance.size | default(omit) }}"
     image_family: "{{ instance.image | default(omit) }}"
+    external_ip: "{{ instance.public | default(omit) }}"
     network: "{{ instance.network.subnet }}"
     state: "present"
 
@@ -13,6 +14,7 @@
     zone: "{{ cloud_compute.zone }}"
     machine_type: "{{ instance.size | default(omit) }}"
     image_family: "{{ instance.image | default(omit) }}"
+    external_ip: "{{ instance.public | default(omit) }}"
     network: "{{ instance.network.subnet }}"
     state: "{{ instance.state | default(omit) }}"
   register: cloud_compute_facts_instance

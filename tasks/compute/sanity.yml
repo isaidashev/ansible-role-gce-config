@@ -1,27 +1,3 @@
 - name: "cloud_compute: Combine cloud_provider in cloud_compute"
   set_fact:
     cloud_compute: "{{ cloud_compute | combine( cloud_provider ) }}"
-
-- name: "cloud_compute: Assert that cloud_compute is mapping"
-  assert:
-    that:
-      - cloud_compute is mapping
-    msg: The cloud_compute variable must be a mapping (hash/dictionay).
-
-- name: "cloud_compute: Assert that cloud_compute.region is string"
-  assert:
-    that:
-      - cloud_compute.region is string
-    msg: The cloud_compute.region variable must be a string.
-
-- name: "cloud_compute: Assert that cloud_compute.zone is string"
-  assert:
-    that:
-      - cloud_compute.zone is string
-    msg: The cloud_compute.zone variable must be a string.
-
-- name: "cloud_compute: Assert that cloud_compute.project is string"
-  assert:
-    that:
-      - cloud_compute.project is string
-    msg: The cloud_compute.project variable must be a string.

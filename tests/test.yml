@@ -2,5 +2,7 @@
 - hosts: localhost
   connection: local
 
-  roles:
-    - ansible-role-gce-config
+  tasks:
+    - include_role:
+        name: victorock.gce_config
+        tasks_from: run

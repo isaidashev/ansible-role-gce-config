@@ -35,6 +35,7 @@
     groups: "{{ instance.tags | default(omit) }}"
     ansible_user: "{{ instance.credential.username }}"
     ansible_host: "{{ cloud_compute_facts.instance[instance.name].public_ip }}"
+    ansible_ssh_host: "{{ cloud_compute_facts.instance[instance.name].public_ip }}"
     instance_facts: "{{ cloud_compute_facts.instance[instance.name] }}"
 
 - name: "cloud_compute.instance: Wait for reachability of instance [ {{ instance.name }} ]"

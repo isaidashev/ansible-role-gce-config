@@ -5,7 +5,7 @@
   include_tasks: "network/public.yml"
   vars:
     public: "{{ public_dict.value }}"
-  with_dict: "{{ cloud_network.public }}"
+  with_dict: "{{ cloud_network.public | default({}) }}"
   loop_control:
     loop_var: public_dict
     label: "{{ public_dict.key }}"

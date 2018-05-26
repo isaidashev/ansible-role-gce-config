@@ -9,4 +9,4 @@
   loop_control:
     loop_var: cloud_network_subnet_dict
     label: "{{ cloud_network_subnet_dict.key }}"
-  when: cloud_network.subnet is mapping
+  when: cloud_network.subnet is defined

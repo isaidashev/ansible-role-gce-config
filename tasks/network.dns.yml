@@ -9,4 +9,4 @@
   loop_control:
     loop_var: cloud_network_dns_dict
     label: "{{ cloud_network_dns_dict.key }}"
-  when: cloud_network.dns is mapping
+  when: cloud_network.dns is defined

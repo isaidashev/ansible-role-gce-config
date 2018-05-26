@@ -9,4 +9,4 @@
   loop_control:
     loop_var: cloud_network_firewall_dict
     label: "{{ cloud_network_firewall_dict.key }}"
-  when: cloud_network.firewall is mapping
+  when: cloud_network.firewall is defined

@@ -9,4 +9,4 @@
   loop_control:
     loop_var: cloud_compute_instance_dict
     label: "{{ cloud_compute_instance_dict.key }}"
-  when: cloud_compute.instance is mapping
+  when: cloud_compute.instance is defined

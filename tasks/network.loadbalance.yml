@@ -9,4 +9,4 @@
   loop_control:
     loop_var: loadbalance_dict
     label: "{{ loadbalance_dict.key }}"
-  when: cloud_network.loadbalance is mapping
+  when: cloud_network.loadbalance is defined

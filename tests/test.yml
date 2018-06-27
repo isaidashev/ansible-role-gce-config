@@ -2,7 +2,11 @@
 - hosts: localhost
   connection: local
 
+  roles:
+    - role: test
+      autorun: yes
+
   tasks:
     - include_role:
-        name: victorock.gce_config
+        name: test
         tasks_from: run

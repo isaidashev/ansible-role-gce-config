@@ -1,0 +1,12 @@
+- name: "cloud_storage: Sanity checks"
+  import_tasks: "storage/sanity.yml"
+
+- name: "cloud_storage: Process element [ bucket ]"
+  include_tasks: "storage/bucket.yml"
+  vars:
+    bucket: "{{ cloud_storage_bucket_dict.value }}"
+  with_dict: "{{ cloud_storage.bucket | default({}) }}"
+  loop_control:
+    loop_var: cloud_storage_bucket_dict
+    label: "{{ cloud_storage_bucket_dict.key }}"
+  when: cloud_storage.bucket is defined

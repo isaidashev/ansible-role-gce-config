@@ -125,6 +125,52 @@ cloud_network:
       record: jenkins.devops.victorock.io
 ```
 
+Cloud Storage Bucket:
+
+>> NOTE: The gc_storage module requires interoperability keys
+>>        Storage -> settings -> interoperability -> create new key
+
+> Example1: Multi-action
+
+```YAML
+cloud_storage:
+  bucket:
+    darkbulb-image-store:
+      name: darkbulb-image-store
+      state: present
+      actions:
+        - mkdir: /files
+          permission: private
+          upload: /files/object.txt
+          from: files/object.txt
+          download: files/object.txt
+          to: files/object_copy.txt
+        - rm: /files/object.txt
+        - rm: /files/
+```
+
+> Example2: Unitary Actions
+
+```YAML
+cloud_storage:
+  bucket:
+    darkbulb-image-store:
+      name: darkbulb-image-store
+      state: present
+      actions:
+        - mkdir: /files
+          permission: private
+        - upload: /files/object.txt
+          from: files/object.txt
+          permission: private
+        - download: files/object.txt
+          to: files/object_copy.txt
+        - rm: /files/object.txt
+        - rm: /files/
+
+```
+
+
 ## Example
 
 Playbook: Instance Provisioning

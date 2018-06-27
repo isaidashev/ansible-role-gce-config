@@ -1,0 +1,15 @@
+- name: "storage.bucket: Ensure state of bucket [{{ bucket.name }}]"
+  gc_storage:
+    gs_access_key: "{{ lookup('ENV','GS_ACCESS_KEY_ID') | default(omit) }}"
+    gs_secret_key: "{{ lookup('ENV','GS_SECRET_ACCESS_KEY') | default(omit) }}"
+    region: "{{ cloud_storage.region }}"
+    bucket: "{{ bucket.name }}"
+    permission: "{{ bucket.permission | default(omit) }}"
+    mode: "{{ (bucket.state|default('present') == 'present') | ternary('create', 'delete') }}"
+
+- name: "storage: Processing [ actions ]"
+  include_tasks: bucket/action.yml
+  when: bucket.actions is defined
+  loop: "{{ bucket.actions }}"
+  loop_control:
+    loop_var: bucket_action

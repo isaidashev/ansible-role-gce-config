@@ -1,3 +1,20 @@
-- name: "cloud_storage: Combine cloud_provider in cloud_storage"
-  set_fact:
-    cloud_storage: "{{ cloud_storage | combine( cloud_provider ) }}"
+- name: "storage.sanity: _cloud.provider.name"
+  assert:
+    that: _cloud.provider.name == 'gce'
+    msg: "This role is only for Google Computing Platform"
+
+- name: "storage.sanity: _cloud.provider.region"
+  assert:
+    that: _cloud.provider.region is string
+
+- name: "storage.sanity: _cloud.provider.zone"
+  assert:
+    that: _cloud.provider.zone is string
+
+- name: "storage.sanity: _cloud.provider.project"
+  assert:
+    that: _cloud.provider.project is string
+
+- name: "storage.sanity: _cloud.provider.cidr"
+  assert:
+    that: _cloud.provider.cidr is string

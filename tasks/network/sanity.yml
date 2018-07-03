@@ -1,3 +1,29 @@
-- name: "cloud_network: Combine cloud_provider in cloud_network"
-  set_fact:
-    cloud_network: "{{ cloud_network | combine(cloud_provider) }}"
+- name: "network.sanity: _cloud.provider.name"
+  assert:
+    that: _cloud.provider.name == 'gce'
+    fail_msg: "This role is only valid for Google Computing Platform"
+    success_msg: "provider configured for Google Computing Platform"
+
+- name: "network.sanity: _cloud.provider.region"
+  assert:
+    that: _cloud.provider.region is string
+    fail_msg: "You need to define a region: https://cloud.google.com/compute/docs/regions-zones/"
+    success_msg: "region defined"
+
+- name: "network.sanity: _cloud.provider.zone"
+  assert:
+    that: _cloud.provider.zone is string
+    fail_msg: "You need to define a zone: https://cloud.google.com/compute/docs/regions-zones/"
+    success_msg: "zone defined"
+
+- name: "network.sanity: _cloud.provider.project"
+  assert:
+    that: _cloud.provider.project is string
+    fail_msg: "You need to define your project."
+    success_msg: "project defined"
+
+- name: "network.sanity: _cloud.provider.cidr"
+  assert:
+    that: _cloud.provider.cidr is string
+    fail_msg: "You need to define a cidr for your cloud: Ex: 10.0.0.0/16"
+    success_msg: "cidr defined"

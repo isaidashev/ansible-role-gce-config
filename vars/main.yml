@@ -1,2 +1,10 @@
-cloud_network_facts: {}
-cloud_compute_facts: {}
+_cloud:
+  provider: "{{ cloud_provider | default({}) }}"
+  storage:  "{{ cloud_storage  | default({}) }}"
+  network:  "{{ cloud_network  | default({}) }}"
+  compute:  "{{ cloud_compute  | default({}) }}"
+
+_cloud_facts:
+  compute: {}
+  network: {}
+  storage: {}

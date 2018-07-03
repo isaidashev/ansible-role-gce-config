@@ -1,5 +1,17 @@
+- name: "cloud.network: Sanity checks"
+  import_tasks: "network/sanity.yml"
+
 - import_tasks: network.subnet.yml
+  when: _cloud.network.subnet is defined
+
 - import_tasks: network.firewall.yml
+  when: _cloud.network.firewall is defined
+
 - import_tasks: network.public.yml
+  when: _cloud.network.public is defined
+
 - import_tasks: network.dns.yml
+  when: _cloud.network.dns is defined
+
 - import_tasks: network.loadbalance.yml
+  when: _cloud.network.loadbalance is defined

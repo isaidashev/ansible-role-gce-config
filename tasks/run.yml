@@ -1,3 +1,8 @@
 - import_tasks: network.yml
+  when: _cloud.network is defined
+
 - import_tasks: storage.yml
+  when: _cloud.storage is defined
+
 - import_tasks: compute.yml
+  when: _cloud.compute is defined

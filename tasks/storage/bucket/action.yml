@@ -1,33 +1,33 @@
-- name: "storage.bucket.action: [ mkdir ]"
+- name: "storage.cloud_storage_bucket.action: [ mkdir ]"
   gc_storage:
     gs_access_key: "{{ lookup('ENV','GS_ACCESS_KEY_ID') | default(omit) }}"
     gs_secret_key: "{{ lookup('ENV','GS_SECRET_ACCESS_KEY') | default(omit) }}"
-    region: "{{ cloud_storage.region }}"
-    bucket: "{{ bucket.name }}"
-    object: "{{ bucket_action.mkdir }}"
-    permission: "{{ bucket_action.permission | default(omit) }}"
+    region: "{{ _cloud.provider.region }}"
+    bucket: "{{ cloud_storage_bucket.name }}"
+    object: "{{ cloud_storage_bucket_action.mkdir }}"
+    permission: "{{ cloud_storage_bucket_action.permission | default(omit) }}"
     mode: "create"
-  when: bucket_action.mkdir is defined
+  when: cloud_storage_bucket_action.mkdir is defined
 
-- name: "storage.bucket.action: [ rm ]"
+- name: "storage.cloud_storage_bucket.action: [ rm ]"
   gc_storage:
     gs_access_key: "{{ lookup('ENV','GS_ACCESS_KEY_ID') | default(omit) }}"
     gs_secret_key: "{{ lookup('ENV','GS_SECRET_ACCESS_KEY') | default(omit) }}"
-    region: "{{ cloud_storage.region }}"
-    bucket: "{{ bucket.name }}"
-    object: "{{ bucket_action.rm }}"
+    region: "{{ _cloud.provider.region }}"
+    bucket: "{{ cloud_storage_bucket.name }}"
+    object: "{{ cloud_storage_bucket_action.rm }}"
     mode: "delete"
-  when: bucket_action.rm is defined
+  when: cloud_storage_bucket_action.rm is defined
 
-- name: "storage.bucket.action: [ cat ]"
+- name: "storage.cloud_storage_bucket.action: [ cat ]"
   block:
     - name: "cat"
       gc_storage:
         gs_access_key: "{{ lookup('ENV','GS_ACCESS_KEY_ID') | default(omit) }}"
         gs_secret_key: "{{ lookup('ENV','GS_SECRET_ACCESS_KEY') | default(omit) }}"
-        region: "{{ cloud_storage.region }}"
-        bucket: "{{ bucket.name }}"
-        object: "{{ bucket_action.cat }}"
+        region: "{{ _cloud.provider.region }}"
+        bucket: "{{ cloud_storage_bucket.name }}"
+        object: "{{ cloud_storage_bucket_action.cat }}"
         mode: "get_str"
       register: _cloud_storage_bucket_action_cat
 
@@ -36,27 +36,27 @@
         cloud_storage_bucket_action_cat: "{{ cloud_storage_bucket_action_cat | default([]) }}"
       set_fact:
         cloud_storage_bucket_action_cat: "{{ cloud_storage_bucket_action_cat + _cloud_storage_bucket_action_cat }}"
-  when: bucket_action.cat is defined
+  when: cloud_storage_bucket_action.cat is defined
 
-- name: "storage.bucket.action: [ upload ]"
+- name: "storage.cloud_storage_bucket.action: [ upload ]"
   gc_storage:
     gs_access_key: "{{ lookup('ENV','GS_ACCESS_KEY_ID') | default(omit) }}"
     gs_secret_key: "{{ lookup('ENV','GS_SECRET_ACCESS_KEY') | default(omit) }}"
-    region: "{{ cloud_storage.region }}"
-    bucket: "{{ bucket.name }}"
-    object: "{{ bucket_action.upload }}"
-    permission: "{{ bucket_action.permission | default(omit) }}"
-    src: "{{ bucket_action.from }}"
+    region: "{{ _cloud.provider.region }}"
+    bucket: "{{ cloud_storage_bucket.name }}"
+    object: "{{ cloud_storage_bucket_action.upload }}"
+    permission: "{{ cloud_storage_bucket_action.permission | default(omit) }}"
+    src: "{{ cloud_storage_bucket_action.from }}"
     mode: "put"
-  when: bucket_action.upload is defined
+  when: cloud_storage_bucket_action.upload is defined
 
-- name: "storage.bucket.action: [ download ]"
+- name: "storage.cloud_storage_bucket.action: [ download ]"
   gc_storage:
     gs_access_key: "{{ lookup('ENV','GS_ACCESS_KEY_ID') | default(omit) }}"
     gs_secret_key: "{{ lookup('ENV','GS_SECRET_ACCESS_KEY') | default(omit) }}"
-    region: "{{ cloud_storage.region }}"
-    bucket: "{{ bucket.name }}"
-    object: "{{ bucket_action.download }}"
-    dest: "{{ bucket_action.to }}"
+    region: "{{ _cloud.provider.region }}"
+    bucket: "{{ cloud_storage_bucket.name }}"
+    object: "{{ cloud_storage_bucket_action.download }}"
+    dest: "{{ cloud_storage_bucket_action.to }}"
     mode: "get"
-  when: bucket_action.download is defined
+  when: cloud_storage_bucket_action.download is defined

@@ -1,37 +1,25 @@
 ---
-sudo: required
-
-services:
-  - docker
+services: docker
 
 env:
-  - distribution: centos
-    version: 7
-  - distribution: fedora
-    version: 27
-  - distribution: fedora
-    version: 26
-  - distribution: fedora
-    version: 25
-  - distribution: fedora
-    version: 24
-  - distribution: ubuntu
-    version: xenial
-  - distribution: ubuntu
-    version: trusty
-  - distribution: debian
-    version: stretch
-  - distribution: debian
-    version: jessie
-
-before_install:
-  - 'sudo docker pull ansible/container-conductor-${distribution}-${version}:0.9.3rc0'
+  - distro: centos7
+  - distro: fedora27
+  - distro: ubuntu1604
+  - distro: ubuntu1404
+  - distro: debian9
+  - distro: debian8
 
 script:
-  - container_id=$(mktemp)
-  - 'sudo docker run --detach --privileged -v /sys/fs/cgroup:/sys/fs/cgroup:ro --volume="${PWD}":/etc/ansible/roles/victorock.gce_config:ro ansible/container-conductor-${distribution}-${version}:0.9.3rc0 > "${container_id}"'
-  - 'sudo docker exec "$(cat ${container_id})" env ANSIBLE_FORCE_COLOR=1 ansible-playbook -v /etc/ansible/roles/victorock.gce_config/tests/test.yml --syntax-check'
-  - 'sudo docker rm -f "$(cat ${container_id})"'
+  # Configure test script so we can run extra tests after playbook is run.
+  - export container_id=$(date +%s)
+  - export cleanup=false
+
+  # Download test shim.
+  - wget -O ${PWD}/tests/test.sh https://gist.githubusercontent.com/geerlingguy/73ef1e5ee45d8694570f334be385e181/raw/
+  - chmod +x ${PWD}/tests/test.sh
+
+  # Run tests.
+  - ${PWD}/tests/test.sh
 
 notifications:
   webhooks: https://galaxy.ansible.com/api/v1/notifications/

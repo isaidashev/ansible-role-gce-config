@@ -2,14 +2,14 @@
   gc_storage:
     gs_access_key: "{{ lookup('ENV','GS_ACCESS_KEY_ID') | default(omit) }}"
     gs_secret_key: "{{ lookup('ENV','GS_SECRET_ACCESS_KEY') | default(omit) }}"
-    region: "{{ cloud_storage.region }}"
-    bucket: "{{ bucket.name }}"
-    permission: "{{ bucket.permission | default(omit) }}"
-    mode: "{{ (bucket.state|default('present') == 'present') | ternary('create', 'delete') }}"
+    region: "{{ _cloud.provider.region }}"
+    bucket: "{{ cloud_storage_bucket.name }}"
+    permission: "{{ cloud_storage_bucket.permission | default(omit) }}"
+    mode: "{{ (cloud_storage_bucket.state|default('present') == 'present') | ternary('create', 'delete') }}"
 
 - name: "storage: Processing [ actions ]"
   include_tasks: bucket/action.yml
-  when: bucket.actions is defined
-  loop: "{{ bucket.actions }}"
+  loop: "{{ cloud_storage_bucket.actions }}"
   loop_control:
-    loop_var: bucket_action
+    loop_var: cloud_storage_bucket_action
+  when: cloud_storage_bucket.actions is defined

@@ -5,10 +5,11 @@ Configure Google Compute Engine
 Cloud Provider:
 ```YAML
 cloud_provider:
-  provider: "gce"
+  name: "gce"
   region: "europe-west1"
   zone: "europe-west1-d"
   project: "darkbulb-lab"
+  cidr: "10.1.0.0/16"
 ```
 
 Cloud Compute Instance:
@@ -199,6 +200,14 @@ Playbook: Instance Provisioning
                 username: jdacosta
                 key: jenkins-devops-victorock-io
 ```
+
+## Requirements
+
+The following libraries are required by Ansible modules of this role:
+
+- apache-libcloud
+- boto3
+
 
 ## License
 

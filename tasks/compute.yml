@@ -1,1 +1,5 @@
+- name: "cloud.network: Sanity checks"
+  import_tasks: "compute/sanity.yml"
+
 - import_tasks: compute.instance.yml
+  when: _cloud.compute.instance is defined

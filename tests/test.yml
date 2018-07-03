@@ -1,12 +1,22 @@
 ---
-- hosts: localhost
-  connection: local
+- hosts: test
+  gather_facts: yes
+
+  vars:
+    cloud_provider:
+      name: "gce"
+      region: "europe-west1"
+      zone: "europe-west1-d"
+      project: "darkbulb-lab"
+      cidr: "10.69.0.0/16"
 
   roles:
     - role: test
-      autorun: yes
+      autorun: true
 
   tasks:
-    - include_role:
+
+    - name: test
+      include_role:
         name: test
         tasks_from: run

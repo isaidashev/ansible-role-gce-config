@@ -2,9 +2,10 @@
 dependencies: []
 
 galaxy_info:
-  author: victorock
-  description: Google Compute Engine
-  license: "license (BSD, MIT)"
+  role_name: gce_config
+  author: "victorock"
+  description: "Role for Google Compute Engine"
+  license: "GPLv3"
   min_ansible_version: 2.5
   platforms:
     - name: EL

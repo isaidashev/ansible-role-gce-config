@@ -1,0 +1,5 @@
+- name: "cloud.storage: Sanity checks"
+  import_tasks: "storage/sanity.yml"
+
+- import_tasks: storage.bucket.yml
+  when: _cloud.storage.bucket is defined

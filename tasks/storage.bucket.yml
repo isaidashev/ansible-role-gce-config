@@ -1,0 +1,8 @@
+- name: "cloud.storage: Process element [ bucket ]"
+  include_tasks: "storage/bucket.yml"
+  vars:
+    cloud_storage_bucket: "{{ cloud_storage_bucket_dict.value }}"
+  with_dict: "{{ _cloud.storage.bucket | default({}) }}"
+  loop_control:
+    loop_var: cloud_storage_bucket_dict
+    label: "{{ cloud_storage_bucket_dict.key }}"

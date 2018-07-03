@@ -1,6 +1,22 @@
 ---
-- hosts: localhost
-  connection: local
+- hosts: all
+  gather_facts: yes
+
+  vars:
+    cloud_provider:
+      name: "gce"
+      region: "europe-west1"
+      zone: "europe-west1-d"
+      project: "darkbulb-lab"
+      cidr: "10.69.0.0/16"
 
   roles:
-    - ansible-role-gce-config
+    - role: test
+      autorun: true
+
+  tasks:
+
+    - name: test
+      include_role:
+        name: test
+        tasks_from: run

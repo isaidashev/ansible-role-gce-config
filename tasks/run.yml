@@ -1,6 +1,8 @@
-- import_tasks: network.subnet.yml
-- import_tasks: network.firewall.yml
-- import_tasks: network.public.yml
-- import_tasks: compute.instance.yml
-- import_tasks: network.dns.yml
-- import_tasks: network.loadbalance.yml
+- import_tasks: network.yml
+  when: _cloud.network is defined
+
+- import_tasks: storage.yml
+  when: _cloud.storage is defined
+
+- import_tasks: compute.yml
+  when: _cloud.compute is defined

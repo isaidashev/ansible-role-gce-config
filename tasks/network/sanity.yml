@@ -1,33 +1,29 @@
-- name: "cloud_network: Combine cloud_provider in cloud_network"
-  set_fact:
-    cloud_network: "{{ cloud_network | combine(cloud_provider) }}"
-
-- name: "cloud_network: Assert that cloud_network is mapping"
+- name: "network.sanity: _cloud.provider.name"
   assert:
-    that:
-      - cloud_network is mapping
-    msg: The cloud_network variable must be a mapping (hash/dictionay).
+    that: _cloud.provider.name == 'gce'
+    fail_msg: "This role is only valid for Google Computing Platform"
+    success_msg: "provider configured for Google Computing Platform"
 
-- name: "cloud_network: Assert that cloud_network.region is string"
+- name: "network.sanity: _cloud.provider.region"
   assert:
-    that:
-      - cloud_network.region is string
-    msg: The cloud_network.region variable must be a string.
+    that: _cloud.provider.region is string
+    fail_msg: "You need to define a region: https://cloud.google.com/compute/docs/regions-zones/"
+    success_msg: "region defined"
 
-- name: "cloud_network: Assert that cloud_network.zone is string"
+- name: "network.sanity: _cloud.provider.zone"
   assert:
-    that:
-      - cloud_network.zone is string
-    msg: The cloud_network.zone variable must be a string.
+    that: _cloud.provider.zone is string
+    fail_msg: "You need to define a zone: https://cloud.google.com/compute/docs/regions-zones/"
+    success_msg: "zone defined"
 
-- name: "cloud_network: Assert that cloud_network.project is string"
+- name: "network.sanity: _cloud.provider.project"
   assert:
-    that:
-      - cloud_network.project is string
-    msg: The cloud_network.project variable must be a string.
+    that: _cloud.provider.project is string
+    fail_msg: "You need to define your project."
+    success_msg: "project defined"
 
-- name: "cloud_network: Assert that cloud_network.cidr is string"
+- name: "network.sanity: _cloud.provider.cidr"
   assert:
-    that:
-      - cloud_network.cidr is string
-    msg: The cloud_network.cidr variable must be a string with valide cidr.
+    that: _cloud.provider.cidr is string
+    fail_msg: "You need to define a cidr for your cloud: Ex: 10.0.0.0/16"
+    success_msg: "cidr defined"

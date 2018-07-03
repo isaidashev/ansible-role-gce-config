@@ -5,10 +5,11 @@ Configure Google Compute Engine
 Cloud Provider:
 ```YAML
 cloud_provider:
-  provider: "gce"
+  name: "gce"
   region: "europe-west1"
   zone: "europe-west1-d"
   project: "darkbulb-lab"
+  cidr: "10.1.0.0/16"
 ```
 
 Cloud Compute Instance:
@@ -24,7 +25,7 @@ cloud_compute:
         key: jenkins-devops-victorock-io
       network:
         subnet: devops-victorock-io
-        public: yes
+        public: ephemeral
       tags:
         - jenkins
 ```
@@ -125,6 +126,52 @@ cloud_network:
       record: jenkins.devops.victorock.io
 ```
 
+Cloud Storage Bucket:
+
+>> NOTE: The gc_storage module requires interoperability keys
+>>        Storage -> settings -> interoperability -> create new key
+
+> Example1: Multi-action
+
+```YAML
+cloud_storage:
+  bucket:
+    darkbulb-image-store:
+      name: darkbulb-image-store
+      state: present
+      actions:
+        - mkdir: /files
+          permission: private
+          upload: /files/object.txt
+          from: files/object.txt
+          download: files/object.txt
+          to: files/object_copy.txt
+        - rm: /files/object.txt
+        - rm: /files/
+```
+
+> Example2: Unitary Actions
+
+```YAML
+cloud_storage:
+  bucket:
+    darkbulb-image-store:
+      name: darkbulb-image-store
+      state: present
+      actions:
+        - mkdir: /files
+          permission: private
+        - upload: /files/object.txt
+          from: files/object.txt
+          permission: private
+        - download: files/object.txt
+          to: files/object_copy.txt
+        - rm: /files/object.txt
+        - rm: /files/
+
+```
+
+
 ## Example
 
 Playbook: Instance Provisioning
@@ -153,6 +200,14 @@ Playbook: Instance Provisioning
                 username: jdacosta
                 key: jenkins-devops-victorock-io
 ```
+
+## Requirements
+
+The following libraries are required by Ansible modules of this role:
+
+- apache-libcloud
+- boto3
+
 
 ## License
 
